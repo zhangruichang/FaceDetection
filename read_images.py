@@ -27,16 +27,15 @@ if __name__ == '__main__':
     for test_class in file_list:
         for test_image in range(16, 21):
             test_path = path + '/' + test_class + '/' + test_class + '.' + str(test_image) + '.jpg'
-            print test_path
+            #print test_path
             test_sim_list = []
-            cnt = {}
             for train_class in file_list:
                 for train_image in range(1, 16):
                     train_path = path + '/' + train_class + '/' + train_class + '.' + str(train_image) + '.jpg'
-                    print train_path
+                    #print train_path
                     test_sim_list.append([get_sim(test_path, train_path), train_class])
             test_sim_list.sort()
-            print test_sim_list
+            #print test_sim_list
             for j in test_sim_list[0:k]:
                 cnt_dict[j[1]] += 1
-            print 'nearest person is person ' + Counter(cnt).most_common()[0][0]
+            print 'Person '+test_class+str(test_image) +' belong to person ' + Counter(cnt_dict).most_common()[0][0]
