@@ -28,9 +28,10 @@ if __name__ == '__main__':
     freq = dict()
     for i in range(256):
         freq.update({i: 0})
+    change_cnt = 0
     for i in range(ppm_image.size[0]):
         for j in range(ppm_image.size[1]):
-            '''
+
             r, g, b = ppm_image.getpixel((i, j))[0] + 100, ppm_image.getpixel((i, j))[1] + 50, \
                       ppm_image.getpixel((i, j))[2] + 70
             if r > 255:
@@ -39,8 +40,10 @@ if __name__ == '__main__':
                 g = 255
             if b > 255:
                 b = 255
-            ppm_image.putpixel((i, j), (r, g, b))
-            '''
+            change_cnt += 1
+            if change_cnt < 50:
+                ppm_image.putpixel((i, j), (r, g, b))
+
             for k in ppm_image.getpixel((i, j)):
                 freq[k] += 1
     huffman_code_dict = encode(freq)

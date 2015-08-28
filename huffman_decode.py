@@ -32,3 +32,12 @@ if __name__ == '__main__':
     original_image_file='D:\GithubRepo\KNNFaceDetection\ppm\Matisse-Small.jpg'
     original_image.save(original_image_file)
     webbrowser.open(original_image_file)
+
+    ppm_path = sys.argv[1]
+    ppm_image = Image.open(ppm_path)
+    dif_cnt = 0
+    for i in range(len(huffman_decoded_image)):
+        for j in range(len(huffman_decoded_image[0])):
+            if ppm_image.getpixel((i, j)) != huffman_decoded_image[i][j]:
+                dif_cnt += 1
+    print float(dif_cnt) / (len(huffman_decoded_image) * len(huffman_decoded_image[0]))
