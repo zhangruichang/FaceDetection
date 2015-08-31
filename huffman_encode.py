@@ -1,4 +1,4 @@
-__author__ = 'zhangruichang'
+
 from PIL import Image
 from heapq import heapify, heappush, heappop
 import sys
@@ -21,8 +21,8 @@ def encode(symb2freq):
 
 
 if __name__ == '__main__':
-    #ppm_path = 'D:\GithubRepo\KNNFaceDetection\ppm\Matisse-Small.ppm'
-    ppm_path = sys.argv[1]
+    ppm_path = 'D:\GithubRepo\KNNFaceDetection\ppm\gogol.ppm'
+    #ppm_path = sys.argv[1]
     ppm_image = Image.open(ppm_path)
     print ppm_image.size[0], ppm_image.size[1]
     freq = dict()
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     change_cnt = 0
     for i in range(ppm_image.size[0]):
         for j in range(ppm_image.size[1]):
-
+            '''
             r, g, b = ppm_image.getpixel((i, j))[0] + 100, ppm_image.getpixel((i, j))[1] + 50, \
                       ppm_image.getpixel((i, j))[2] + 70
             if r > 255:
@@ -43,23 +43,27 @@ if __name__ == '__main__':
             change_cnt += 1
             if change_cnt < 50:
                 ppm_image.putpixel((i, j), (r, g, b))
-
+            '''
             for k in ppm_image.getpixel((i, j)):
                 freq[k] += 1
-    huffman_code_dict = encode(freq)
+    #print freq
+    freq = dict(filter(lambda x: x[1] != 0, freq.items()))
+    #print freq
+    huffman_code_dict = dict(encode(freq))
     #print huffman_code_dict
     #print ppm_path+'.huffman_encoded_image'
     huffman_encoded_image_file = open(ppm_path + '.huffman_encoded_image', 'w')
     huffman_code_file = open(ppm_path + '.huffman_code', 'w')
-    for ele in huffman_code_dict:
-        huffman_code_file.write(str(ele[0]) + ' ' + ele[1] + '\n')
+    for (k, v) in huffman_code_dict.items():
+        huffman_code_file.write( str(k) + ' ' + v + '\n')
 
     huffman_code_file.close()
 
     for i in range(ppm_image.size[0]):
         for j in range(ppm_image.size[1]):
+            #print ppm_
             huffman_encoded_image_file.write(
-                ' '.join(huffman_code_dict[ppm_image.getpixel((i, j))[k]][1] for k in range(3)) + '\t')
+                ''.join(huffman_code_dict[ppm_image.getpixel((i, j))[k]] for k in range(3)))
             # huffman_encoded_image_file.write('\t')
         huffman_encoded_image_file.write('\n')
     huffman_encoded_image_file.close()
