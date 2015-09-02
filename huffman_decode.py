@@ -59,12 +59,12 @@ if __name__ == '__main__':
     for i in range(len(huffman_decoded_image)):
         for j in range(len(huffman_decoded_image[0])):
             original_image.putpixel((i, j), huffman_decoded_image[i][j])
-    original_image_file = sys.argv[1] + '.jpg'
+    original_image_file = image_path + 'decoded.ppm'
     #original_image_file='D:\GithubRepo\KNNFaceDetection\ppm\Matisse-Small.jpg'
     original_image.save(original_image_file)
     webbrowser.open(original_image_file)
 
-    ppm_path = sys.argv[1]
+    ppm_path = image_path
     ppm_image = Image.open(ppm_path)
     dif_cnt = 0
     for i in range(len(huffman_decoded_image)):

@@ -1,8 +1,8 @@
-
 from PIL import Image
 from heapq import heapify, heappush, heappop
 import sys
-#input: char frequency list
+import random
+# input: char frequency list
 #output: huffman code list, sorted by char desc
 def encode(symb2freq):
     """Huffman encode the given dict mapping symbols to weights"""
@@ -28,7 +28,6 @@ if __name__ == '__main__':
     freq = dict()
     for i in range(256):
         freq.update({i: 0})
-    change_cnt = 0
     for i in range(ppm_image.size[0]):
         for j in range(ppm_image.size[1]):
             '''
@@ -41,7 +40,7 @@ if __name__ == '__main__':
             if b > 255:
                 b = 255
             change_cnt += 1
-            if change_cnt < 50:
+            if change_cnt < 1000:
                 ppm_image.putpixel((i, j), (r, g, b))
             '''
             for k in ppm_image.getpixel((i, j)):
@@ -55,15 +54,22 @@ if __name__ == '__main__':
     huffman_encoded_image_file = open(ppm_path + '.huffman_encoded_image', 'w')
     huffman_code_file = open(ppm_path + '.huffman_code', 'w')
     for (k, v) in huffman_code_dict.items():
-        huffman_code_file.write( str(k) + ' ' + v + '\n')
+        huffman_code_file.write(str(k) + ' ' + v + '\n')
 
     huffman_code_file.close()
-
+    line_list = []
+    change_cnt = 0
     for i in range(ppm_image.size[0]):
         for j in range(ppm_image.size[1]):
             #print ppm_
-            huffman_encoded_image_file.write(
-                ''.join(huffman_code_dict[ppm_image.getpixel((i, j))[k]] for k in range(3)))
+            line_list[:] = ''.join(huffman_code_dict[ppm_image.getpixel((i, j))[k]] for k in range(3))
+            index = random.randint(0, len(line_list)-1)
+            if change_cnt < 5:
+                line_list[index] = chr(ord('1') + ord('0') - ord(line_list[index]))
+            change_cnt += 1
+
+            line_str = ''.join(line_list)
+            huffman_encoded_image_file.write(line_str)
             # huffman_encoded_image_file.write('\t')
         huffman_encoded_image_file.write('\n')
     huffman_encoded_image_file.close()
